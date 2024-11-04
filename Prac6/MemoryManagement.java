@@ -128,3 +128,56 @@ public class MemoryManagement {
         worstFit(blockSizesWorstFit, processSizes, numProcesses, numBlocks);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Enter number of memory blocks: 5
+// Enter number of processes: 4
+// Enter sizes of the memory blocks: 
+// Block 1 size: 100
+// Block 2 size: 500
+// Block 3 size: 200
+// Block 4 size: 300
+// Block 5 size: 600
+// Enter sizes of the processes: 
+// Process 1 size: 212
+// Process 2 size: 417
+// Process 3 size: 112
+// Process 4 size: 426
+
+// Memory Allocation using First Fit:
+// Process 1 allocated to Block 2
+// Process 2 allocated to Block 5
+// Process 3 allocated to Block 3
+// Process 4 not allocated
+
+// Memory Allocation using Next Fit (No Wrap Around):
+// Process 1 allocated to Block 2
+// Process 2 allocated to Block 5
+// Process 3 not allocated
+// Process 4 not allocated
+
+// Memory Allocation using Best Fit:
+// Process 1 allocated to Block 4
+// Process 2 allocated to Block 2
+// Process 3 allocated to Block 3
+// Process 4 allocated to Block 5
+
+// Memory Allocation using Worst Fit:
+// Process 1 allocated to Block 5
+// Process 2 allocated to Block 2
+// Process 3 allocated to Block 4
+// Process 4 not allocated

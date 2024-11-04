@@ -4,78 +4,120 @@ import java.util.Scanner;
 class SJF {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        System.out.println("enter the number of processes");
-        int n;
-        n = sc.nextInt();
-        int i;
+        System.out.println("Enter the number of processes:");
+        int n = sc.nextInt();
+        
+        // Arrays to hold process details
         String[] process = new String[n];
-        for (i = 0; i < n; i++) {
-            process[i] = "p" + (i + 1);
+        int[] arrivalTime = new int[n];
+        int[] cpuTime = new int[n];
+        int[] startTime = new int[n];
+        int[] finishTime = new int[n];
+        int[] waitingTime = new int[n];
+        int[] turnaroundTime = new int[n];
+        boolean[] completed = new boolean[n]; // Track completed processes
+
+        // Initialize processes
+        for (int i = 0; i < n; i++) {
+            process[i] = "P" + (i + 1);
+            System.out.println("Enter arrival time for process " + process[i] + ":");
+            arrivalTime[i] = sc.nextInt();
+            System.out.println("Enter CPU time for process " + process[i] + ":");
+            cpuTime[i] = sc.nextInt();
         }
-        int[] arrivaltime = new int[n];
-        for (i = 0; i < n; i++) {
-            arrivaltime[i] = 0;
-        }
-        System.out.println("Enter CPU time for the  processes");
-        int[] CPUtime = new int[n];
-        for (i = 0; i < n; i++) {
-            CPUtime[i] = sc.nextInt();
-        }
-        for (i = 0; i < n; i++) {
-            for (int j = i + 1; j < n; j++) {
-                String tmp1;
-                int tmp2 = 0;
-                if (CPUtime[i] > CPUtime[j]) {
-                    tmp1 = process[i];
-                    process[i] = process[j];
-                    process[j] = tmp1;
-                    tmp2 = CPUtime[i];
-                    CPUtime[i] = CPUtime[j];
-                    CPUtime[j] = tmp2;
+
+        int currentTime = 0, completedProcesses = 0;
+        
+        while (completedProcesses < n) {
+            // Find the process with the shortest job that has already arrived
+            int shortestIndex = -1;
+            int shortestCPU = Integer.MAX_VALUE;
+            
+            for (int i = 0; i < n; i++) {
+                if (!completed[i] && arrivalTime[i] <= currentTime && cpuTime[i] < shortestCPU) {
+                    shortestCPU = cpuTime[i];
+                    shortestIndex = i;
                 }
             }
+
+            // If no process has arrived by the current time, increment time
+            if (shortestIndex == -1) {
+                currentTime++;
+                continue;
+            }
+
+            // Set times for the selected process
+            startTime[shortestIndex] = currentTime;
+            finishTime[shortestIndex] = currentTime + cpuTime[shortestIndex];
+            turnaroundTime[shortestIndex] = finishTime[shortestIndex] - arrivalTime[shortestIndex];
+            waitingTime[shortestIndex] = turnaroundTime[shortestIndex] - cpuTime[shortestIndex];
+            
+            // Update current time and mark process as completed
+            currentTime = finishTime[shortestIndex];
+            completed[shortestIndex] = true;
+            completedProcesses++;
         }
-        int[] starttime = new int[n];
-        starttime[0] = arrivaltime[0];
-        for (i = 1; i < n; i++) {
-            starttime[i] = starttime[i - 1] + CPUtime[i - 1];
+
+        // Calculate averages
+        float totalTurnaroundTime = 0, totalWaitingTime = 0;
+        for (int i = 0; i < n; i++) {
+            totalTurnaroundTime += turnaroundTime[i];
+            totalWaitingTime += waitingTime[i];
         }
-        int[] finishtime = new int[n];
-        for (i = 0; i < n; i++) {
-            finishtime[i] = starttime[i] + CPUtime[i];
+        
+        float avgTurnaroundTime = totalTurnaroundTime / n;
+        float avgWaitingTime = totalWaitingTime / n;
+        
+        // Output results
+        System.out.println("PROCESS    ARRIVAL TIME   CPU TIME   START TIME   FINISH TIME   TURNAROUND TIME   WAITING TIME");
+        for (int i = 0; i < n; i++) {
+            System.out.printf("%s\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\t\t%d\n",
+                    process[i], arrivalTime[i], cpuTime[i], startTime[i], finishTime[i], turnaroundTime[i], waitingTime[i]);
         }
-        int[] waitingtime = new int[n];
-        for (i = 0; i < n; i++) {
-            waitingtime[i] = starttime[i] - arrivaltime[i];
-        }
-        int[] turnaroundtime = new int[n];
-        for (i = 0; i < n; i++) {
-            turnaroundtime[i] = waitingtime[i] + CPUtime[i];
-        }
-        float avg_turnaround_time = 0;
-        float avg_waiting_time = 0;
-        float sum1 = 0;
-        float sum = 0;
-        for (i = 0; i < n; i++) {
-            sum = turnaroundtime[i] + sum;
-            sum1 = waitingtime[i] + sum1;
-        }
-        avg_turnaround_time = sum / n;
-        avg_waiting_time = sum1 / n;
-        System.out.println("PROCESSESS    ARRIVALTIME     CPUTIME      STARTTIME       FINISHTIME        TURNTIME        WAITINGTIME");
-        for (i = 0; i < n; i++) {
-            System.out.println("\t");
-            System.out.print(process[i] + "\t\t");
-            System.out.print(arrivaltime[i] + "\t\t");
-            System.out.print(CPUtime[i] + "\t\t");
-            System.out.print(starttime[i] + "\t\t");
-            System.out.print(finishtime[i] + "\t\t");
-            System.out.print(turnaroundtime[i] + "\t\t");
-            System.out.print(waitingtime[i] + "\t\t");
-            System.out.println("\n");
-        }
-        System.out.println("\n");
-        System.out.println("average turnaround time is " + avg_turnaround_time);
-        System.out.println("average waiting time is " + avg_waiting_time);
+        System.out.printf("\nAverage Turnaround Time: %.2f\n", avgTurnaroundTime);
+        System.out.printf("Average Waiting Time: %.2f\n", avgWaitingTime);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Enter the number of processes:
+// 4
+// Enter arrival time for process P1:
+// 1
+// Enter CPU time for process P1:
+// 3
+// Enter arrival time for process P2:
+// 2
+// Enter CPU time for process P2:
+// 4
+// Enter arrival time for process P3:
+// 1
+// Enter CPU time for process P3:
+// 2
+// Enter arrival time for process P4:
+// 4
+// Enter CPU time for process P4:
+// 4
+// PROCESS    ARRIVAL TIME   CPU TIME   START TIME   FINISH TIME   TURNAROUND TIME   WAITING TIME
+// P1              1               3               3               6               5               2
+// P2              2               4               6               10              8               4
+// P3              1               2               1               3               2               0
+// P4              4               4               10              14              10              6
+
+// Average Turnaround Time: 6.25
+// Average Waiting Time: 3.00

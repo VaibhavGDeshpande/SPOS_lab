@@ -94,3 +94,57 @@ public class FIFOPageReplacement {
         System.out.println("Total Page Faults = " + pageFaults);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Enter number of frames: 3
+// Enter number of pages: 15
+// Enter the page reference string:
+// 7
+// 0
+// 1
+// 2
+// 0
+// 3 
+// 0
+// 4
+// 2
+// 3
+// 0
+// 1
+// 2
+// 0
+// 1
+
+// Step    Page    Frames          Page Fault      Comment
+// 1       7       7 - -           Yes             Loaded into frame
+// 2       0       7 0 -           Yes             Loaded into frame
+// 3       1       7 0 1           Yes             Loaded into frame
+// 4       2       2 0 1           Yes             Replaced 7 (FIFO)
+// 5       0       2 0 1           No              Page Hit
+// 6       3       2 3 1           Yes             Replaced 0 (FIFO)
+// 7       0       2 3 0           Yes             Replaced 1 (FIFO)
+// 8       4       4 3 0           Yes             Replaced 2 (FIFO)
+// 9       2       4 2 0           Yes             Replaced 3 (FIFO)
+// 10      3       4 2 3           Yes             Replaced 0 (FIFO)
+// 11      0       0 2 3           Yes             Replaced 4 (FIFO)
+// 12      1       0 1 3           Yes             Replaced 2 (FIFO)
+// 13      2       0 1 2           Yes             Replaced 3 (FIFO)
+// 14      0       0 1 2           No              Page Hit
+// 15      1       0 1 2           No              Page Hit

@@ -112,3 +112,64 @@ public class OptimalPageReplacement {
         optimalPageReplacement(pages, capacity);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Enter number of pages: 20
+// Enter reference string: 7
+// 0
+// 1
+// 2
+// 0
+// 3
+// 0
+// 4
+// 2
+// 3
+// 0
+// 3
+// 2
+// 1
+// 2
+// 0
+// 1
+// 7
+// 0
+// 1
+// Enter number of frames: 4
+
+// Step    Page    Frames          Page Fault      Comment
+// 1       7       7 - - -                 Yes             Loaded into frame
+// 2       0       7 0 - -                 Yes             Loaded into frame
+// 3       1       7 0 1 -                 Yes             Loaded into frame
+// 4       2       7 0 1 2                 Yes             Loaded into frame
+// 5       0       7 0 1 2                 No              Page hit
+// 6       3       3 0 1 2                 Yes             Replaced 7 (Optimal)
+// 7       0       3 0 1 2                 No              Page hit
+// 8       4       3 0 4 2                 Yes             Replaced 1 (Optimal)
+// 9       2       3 0 4 2                 No              Page hit
+// 10      3       3 0 4 2                 No              Page hit
+// 11      0       3 0 4 2                 No              Page hit
+// 12      3       3 0 4 2                 No              Page hit
+// 13      2       3 0 4 2                 No              Page hit
+// 14      1       1 0 4 2                 Yes             Replaced 3 (Optimal)
+// 15      2       1 0 4 2                 No              Page hit
+// 16      0       1 0 4 2                 No              Page hit
+// 17      1       1 0 4 2                 No              Page hit
+// 18      7       1 0 7 2                 Yes             Replaced 4 (Optimal)
+// 19      0       1 0 7 2                 No              Page hit
+// 20      1       1 0 7 2                 No              Page hit
+// Total Page Faults = 8
